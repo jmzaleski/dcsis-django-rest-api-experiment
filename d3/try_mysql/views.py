@@ -12,8 +12,16 @@ def index(request):
     return render(request, 'try_mysql/index.html', {'people_list': people_list})
  
 def person(request): #, first_name):
-    # i wimpled out from parsting the URL such that it would pass first_name as part to this function
+    # TODO: i wimpled out from parsing the URL properly
     first_name = request.GET.get("first_name")
+    print("first_name",first_name)
+    p = get_object_or_404(Person, first_name=first_name)
+    # now return the rendered template
+    return render(request, 'try_mysql/person.html', {'person': p})
+
+def person2(request,first_name=None): #, first_name):
+    #grrrrrrr can't form the URL for this guy
+    print("person2: first_name",first_name)
     p = get_object_or_404(Person, first_name=first_name)
     # now return the rendered template
     return render(request, 'try_mysql/person.html', {'person': p})

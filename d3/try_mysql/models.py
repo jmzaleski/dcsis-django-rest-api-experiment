@@ -13,4 +13,6 @@ class Person(models.Model):
         #return reverse('whattocallit', kwargs={'first_name':self.first_name})
         #return reverse('person-details', args=[self.first_name])
         #return reverse('person-details', kwargs={'first_name':self.first_name})
-        return reverse('person_details')
+        url = reverse('person_details')
+        print("url", url)
+        return url

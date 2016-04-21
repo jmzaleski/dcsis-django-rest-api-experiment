@@ -21,14 +21,19 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from try_rest import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^$', try_mysql.views.index, name="whattocallit"),
-    #url(r'^person?first_name=([a-zA-Z_]+)/$', try_mysql.views.person, name="person_details"),
-    url(r'^person/*$', try_mysql.views.person, name="person_details"),
-    url(r'^employees/$', views.EmployeeList.as_view()),
-    url(r'^employees/(?P<employee_number>[0-9]+)/$', views.EmployeeDetails.as_view()),
+    url(r'^admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
+    url(r'^$', try_mysql.views.index), # http://127.0.0.1:8000/
+    url(r'^persons/$', try_mysql.views.index), # http://127.0.0.1:8000/persons/
+    
+    #this url turns out weird. http://127.0.0.1:8000/person/first_name/a/?first_name=Mathew
+    url(r'^person/first_name/[a-zA-Z]+/$', try_mysql.views.person, name="person_details"),
+    
+    #I guess I have no idea what i'm doing? 
+    url(r'^person/first_name/?(P<first_name>[a-zA-Z]+)/$', try_mysql.views.person2),
+
+    #REST framework works as I guessed it would    
     url(r'^apipersons/$', views.LegacyPersonListRestView.as_view()),
-    url(r'^apiperson/(?P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
+    url(r'^apiperson/?(P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
