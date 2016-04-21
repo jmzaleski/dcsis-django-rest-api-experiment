@@ -12,16 +12,13 @@ def index(request):
     return render(request, 'try_mysql/index.html', {'people_list': people_list})
  
 def person(request): #, first_name):
-    # TODO: i wimpled out from parsing the URL properly
+    # TODO: i wimped out from parsing the URL properly
     first_name = request.GET.get("first_name")
     print("first_name",first_name)
     p = get_object_or_404(Person, first_name=first_name)
-    # now return the rendered template
     return render(request, 'try_mysql/person.html', {'person': p})
 
-def person2(request,first_name=None): #, first_name):
-    #grrrrrrr can't form the URL for this guy
-    print("person2: first_name",first_name)
+def person2(request,first_name=None): 
+    #depends on (?<first_name> ... ) stuff in URL matching expression
     p = get_object_or_404(Person, first_name=first_name)
-    # now return the rendered template
     return render(request, 'try_mysql/person.html', {'person': p})
