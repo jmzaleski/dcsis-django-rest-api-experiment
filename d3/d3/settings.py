@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'try_mysql'
+    'try_mysql',
+    'rest_framework',
+    'try_rest', #this right? was snippets.apps.SnippetsConfig
 ]
 
 MIDDLEWARE_CLASSES = [

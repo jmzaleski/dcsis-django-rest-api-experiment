@@ -17,9 +17,16 @@ from django.conf.urls import url
 from django.contrib import admin
 import try_mysql.views
 
+from rest_framework.urlpatterns import format_suffix_patterns
+from try_rest import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', try_mysql.views.index, name="whattocallit"),
     #url(r'^person?first_name=([a-zA-Z_]+)/$', try_mysql.views.person, name="person_details"),
     url(r'^person/*$', try_mysql.views.person, name="person_details"),
+    url(r'^employees/$', views.EmployeeList.as_view()),
+    url(r'^employees/(?P<pk>[0-9]+)/$', views.EmployeeDetails.as_view()),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
