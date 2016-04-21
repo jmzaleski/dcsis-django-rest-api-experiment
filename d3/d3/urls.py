@@ -26,7 +26,9 @@ urlpatterns = [
     #url(r'^person?first_name=([a-zA-Z_]+)/$', try_mysql.views.person, name="person_details"),
     url(r'^person/*$', try_mysql.views.person, name="person_details"),
     url(r'^employees/$', views.EmployeeList.as_view()),
-    url(r'^employees/(?P<pk>[0-9]+)/$', views.EmployeeDetails.as_view()),
+    url(r'^employees/(?P<employee_number>[0-9]+)/$', views.EmployeeDetails.as_view()),
+    url(r'^apipersons/$', views.LegacyPersonListRestView.as_view()),
+    url(r'^apiperson/(?P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
