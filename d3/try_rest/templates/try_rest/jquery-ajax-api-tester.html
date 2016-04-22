@@ -24,31 +24,42 @@ $(document).ready(function(){
         }
         return cookieValue;
     }//getCookie
-    
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }//crsfSafe
-    
-    //refactor and stuff. here, just pissing around
-    function  ajaxREST(first_name, type, data_for_put_or_null, success_callback){
+
+    // make a /apiperson REST call.
+    // the factoring is random at this point.
+    // note we return the Promise for the AJAX request, not the data passed to the success function
+    // this presupposes we're going to pass it to a .then
+    //
+    function  ajaxREST(first_name, type, data_for_put_or_null){
     	rest_url = "/apiperson/" + first_name + "/";
 		console.log("about to make ajax " + type + " call to endpoint url: " + rest_url);
-   	    $.ajax({ 
+		//so ajax now returns a promise
+   	    return $.ajax({ 
    	     	url: rest_url,
    	        type: type, 
    	        jsonp: "callback", 
    	        data: data_for_put_or_null,
-   	        success: success_callback,
    	        error: function(exception){
    	            var msg = "ajax " + type + " call failed. Exception responseText:" + exception.responseText + " status:" + exception.status;
    	            console.log(msg);
    	            alert(msg);
    	        },
    	    });
-        console.log("after call from  ajax call to endpoint url:    http://127.0.0.1:8000/apiperson/mathew/ " );
-    }
-    	    
+    }    
+
+    function newHtml(result){
+   	   var html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
+   	   console.log(html);
+   	   return html;
+   	}
+    function changeMe(result){
+       jQuery('#changeme').html(newHtml(result)).hide().fadeIn(750);
+    }    
+    //this adds the request header that django's CSRF protection strategy requires
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
     		var csrf_token = getCookie('csrftoken');
@@ -59,26 +70,43 @@ $(document).ready(function(){
         }
     }); //ajaxsetup
 
-    //replace the click of a button to do a GET ajax REST call..
+    // the then idiom for chaining queries from http://www.dotnetcurry.com/jquery/1022/jquery-ajax-deferred-promises
     $(".ButtonWrapperGET").find(":submit").click(
-    	function (){
-			ajaxREST("Mathew", "GET", null, function(result){
-	            new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
-	            console.log(new_html);
-	            jQuery('#changeme').html(new_html).hide().fadeIn(1500);
-	        })
-	    });
-	    
-	    //replace the second button with a PUT request
-	    $(".ButtonWrapperPUT").find(":submit").click(
-        	function (){
-    			ajaxREST("Mathew", "PUT", {first_name: "Mathew", last_name: "Zaleski", email:"z@zaleski.ca"}, function(result){
-    	            console.log(result);
-    	        });
-   	    }); //click	    
+        	function() {
+    			ajaxREST("Mathew", "GET", null).then( function(result){ changeMe(result); });
+    	    });
+	
+    //prepend an m to email (not feeling creative UX juices today, I guess)
+    $(".ButtonWrapperPUTplus").find(":submit").click(
+        	function(){
+    			ajaxREST("Mathew", "GET", null)
+    			.then( 
+    				function(result){
+    	    	       console.log(JSON.stringify(result, null, 2));
+    	    	       result.email = "m" + result.email; 
+    	    	       return ajaxREST("Mathew", "PUT", result)
+    	    	     })
+    	    	.then(	
+    	    		function(result){ changeMe(result);	}
+    	    		);
+    	    }); //click 
 
-	    
+    //remove first char of email
+    $(".ButtonWrapperPUTminus").find(":submit").click(
+        	function(){
+    			ajaxREST("Mathew", "GET", null)
+    			.then( 
+    				function(result) {
+    	    	    	console.log(JSON.stringify(result, null, 2));
+    	    	    	result.email = result.email.substr(1,result.email.length-1);
+    	    	    	return ajaxREST("Mathew", "PUT", result)
+    	    	    })
+   	    	    .then( 
+   	    	    	function(result){ changeMe(result);
+    	    	 });
+    	    }); //click     
 });//doc ready
+
 </script>
 </head>
 
@@ -94,8 +122,12 @@ $(document).ready(function(){
 
 <h3>now try a PUT</h3>
 
-<div class="ButtonWrapperPUT">
-  <button>PUT email z@zaleski.ca to Mathew</button>
+<div class="ButtonWrapperPUTplus">
+  <button>PUT prepend m to email</button>
+</div>
+
+<div class="ButtonWrapperPUTminus">
+  <button>PUT remove me from email </button>
 </div>
 
 </body>
