@@ -62,39 +62,20 @@ $(document).ready(function(){
     //replace the click of a button to do a GET ajax REST call..
     $(".ButtonWrapperGET").find(":submit").click(
     	function (){
-			console.log("about to make ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
 			ajaxREST("Mathew", "GET", null, function(result){
 	            new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
 	            console.log(new_html);
 	            jQuery('#changeme').html(new_html).hide().fadeIn(1500);
 	        })
-	        console.log("after call from  ajax call to endpoint url:    http://127.0.0.1:8000/apiperson/mathew/ " );
 	    });
 	    
 	    //replace the second button with a PUT request
 	    $(".ButtonWrapperPUT").find(":submit").click(
         	function (){
-    			console.log("about to make PUT ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
-    	    $.ajax({ 
-    	        url: "http://127.0.0.1:8000/apiperson/Mathew/", 
-    	        type: "PUT",
-    	        data: {first_name: "Mathew", last_name: "Zaleski", email:"z@zaleski.ca"},
-    	        jsonp: "callback", 
-    	        success: function(result){
-    	            //nice to stuff this into a table, but that's too hard html just now..
+    			ajaxREST("Mathew", "PUT", {first_name: "Mathew", last_name: "Zaleski", email:"z@zaleski.ca"}, function(result){
     	            console.log(result);
-    	            //new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
-    	            //jQuery('#changeme').html(new_html).hide().fadeIn(1500);
-    	        }, 
-    	        error: function(exception){
-    	            var msg = "ajax PUT call failed. Exception responseText:" + exception.responseText + " status:" + exception.status;
-    	            console.log(msg);
-    	            alert(msg);
-    	        },
-    	    }); //ajax call
-    	
-    	        console.log("after PUT call from  ajax call to endpoint url:    http://127.0.0.1:8000/apiperson/mathew/ " );
-    	    }); //click	    
+    	        });
+   	    }); //click	    
 
 	    
 });//doc ready
