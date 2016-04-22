@@ -37,14 +37,13 @@ $(document).ready(function(){
             }
         }
     });    
-    
-    $("button").click(function(){
-		console.log("about to make ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
+
+    $(".ButtonWrapper").find(":submit").click(function (){
+    		console.log("about to make ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
         $.ajax({ 
             url: "http://127.0.0.1:8000/apiperson/mathew/", 
-            type: "POST", 
+            type: "GET", 
             jsonp: "callback", 
-            //dataType: 'jsonp', 
             success: function(result){
                 //nice to stuff this into a table, but that's too hard html just now..
                 new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
@@ -68,7 +67,9 @@ $(document).ready(function(){
 
 <div id="changeme"><h2>Let jQuery AJAX Change This Text</h2></div>
 
-<button>Get External Content</button>
+<div class="ButtonWrapper">
+  <button>Get External Content</button>
+</div>
 
 </body>
 </html>
