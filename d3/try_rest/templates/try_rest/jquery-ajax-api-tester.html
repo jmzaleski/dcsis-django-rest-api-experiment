@@ -21,11 +21,7 @@ $(document).ready(function(){
             jsonp: "callback", 
             //dataType: 'jsonp', 
             success: function(result){
-                console.log(result);
-                console.log("result.first_name:" + result.first_name);
-                console.log("result.last_name:" + result.last_name);
-                console.log("result.email:" + result.email);
-                //stuff this into a table, but that's too hard html/jquery for me just now..
+                //nice to stuff this into a table, but that's too hard html just now..
                 new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
                 console.log(new_html);
                 jQuery('#changeme').html(new_html).hide().fadeIn(1500);
