@@ -31,15 +31,17 @@ $(document).ready(function(){
     }//crsfSafe
     
     //refactor and stuff. here, just pissing around
-    function  ajaxGET(success){
-		console.log("about to make ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
+    function  ajaxREST(first_name, type, data_for_put_or_null, success_callback){
+    	rest_url = "/apiperson/" + first_name + "/";
+		console.log("about to make ajax " + type + " call to endpoint url: " + rest_url);
    	    $.ajax({ 
-   	        url: "http://127.0.0.1:8000/apiperson/Mathew/", 
-   	        type: "GET", 
+   	     	url: rest_url,
+   	        type: type, 
    	        jsonp: "callback", 
-   	        success: success,
+   	        data: data_for_put_or_null,
+   	        success: success_callback,
    	        error: function(exception){
-   	            var msg = "ajax call failed. Exception responseText:" + exception.responseText + " status:" + exception.status;
+   	            var msg = "ajax " + type + " call failed. Exception responseText:" + exception.responseText + " status:" + exception.status;
    	            console.log(msg);
    	            alert(msg);
    	        },
@@ -61,25 +63,13 @@ $(document).ready(function(){
     $(".ButtonWrapperGET").find(":submit").click(
     	function (){
 			console.log("about to make ajax call to endpoint url: http://127.0.0.1:8000/apiperson/mathew/ ");
-	    $.ajax({ 
-	        url: "http://127.0.0.1:8000/apiperson/Mathew/", 
-	        type: "GET", 
-	        jsonp: "callback", 
-	        success: function(result){
-	            //nice to stuff this into a table, but that's too hard html just now..
+			ajaxREST("Mathew", "GET", null, function(result){
 	            new_html = "<h2>" + result.last_name + '</h2><p>'+ result.first_name + '<p>' + result.email ;
 	            console.log(new_html);
 	            jQuery('#changeme').html(new_html).hide().fadeIn(1500);
-	        }, 
-	        error: function(exception){
-	            var msg = "ajax call failed. Exception responseText:" + exception.responseText + " status:" + exception.status;
-	            console.log(msg);
-	            alert(msg);
-	        },
-	    }); //ajax call
-	
-        console.log("after call from  ajax call to endpoint url:    http://127.0.0.1:8000/apiperson/mathew/ " );
-	    }); //click
+	        })
+	        console.log("after call from  ajax call to endpoint url:    http://127.0.0.1:8000/apiperson/mathew/ " );
+	    });
 	    
 	    //replace the second button with a PUT request
 	    $(".ButtonWrapperPUT").find(":submit").click(
