@@ -20,7 +20,12 @@ import try_mysql.views
 from rest_framework.urlpatterns import format_suffix_patterns
 from try_rest import views
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
+    url(r'^apitest/$', 
+        TemplateView.as_view(template_name='try_rest/jquery-ajax-api-tester.html'),
+        name='apitest'),               
     url(r'^admin/', admin.site.urls),  # http://127.0.0.1:8000/admin/
     url(r'^$', try_mysql.views.index), # http://127.0.0.1:8000/
     url(r'^persons/$', try_mysql.views.index), # http://127.0.0.1:8000/persons/
@@ -28,12 +33,12 @@ urlpatterns = [
     #reverse for this url turns out weird. http://127.0.0.1:8000/person/first_name/a/?first_name=Mathew
     url(r'^person/first_name/[a-zA-Z]+/$', try_mysql.views.person, name=r'person_details'),
     
-    # http://127.0.0.1:8000/personx/first_name/mathew/
+    # http://127.0.0.1:8000/persons/first_name/mathew/
     url(r'^persons/first_name/(?P<first_name>[a-zA-Z]+)/$', try_mysql.views.person2, name="person_details2"),
 
     #REST framework works as I guessed it would    
     url(r'^apipersons/$', views.LegacyPersonListRestView.as_view()),
-    url(r'^apiperson/?(P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
+    url(r'^apiperson/(?P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

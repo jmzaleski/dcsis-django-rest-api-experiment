@@ -16,7 +16,7 @@ class LegacyPersonDetailsRestView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "first_name"
     def get_queryset(self):
         thingy = self.kwargs["first_name"]
-        print(thingy)
+        print("LegacyPersonDetailsRestView returning", thingy)
         #how does this parse?? how does python know what employee_number is??
         return Person.objects.filter(first_name=thingy)
     
