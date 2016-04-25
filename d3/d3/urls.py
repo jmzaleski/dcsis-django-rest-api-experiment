@@ -36,7 +36,7 @@ urlpatterns = [
     # http://127.0.0.1:8000/persons/first_name/mathew/
     url(r'^persons/first_name/(?P<first_name>[a-zA-Z]+)/$', try_mysql.views.person2, name="person_details2"),
 
-    #REST framework works as I guessed it would    
+    #what are REST framework naming conventions? /apipersons/ for the list. apiperson/mathew/ or should be /apipersons/mathew/ ??
     url(r'^apipersons/$', views.LegacyPersonListRestView.as_view()),
     url(r'^apiperson/(?P<first_name>[a-zA-Z]+)/$', views.LegacyPersonDetailsRestView.as_view()),
 ]
