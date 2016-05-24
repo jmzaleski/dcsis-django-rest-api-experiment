@@ -46,6 +46,18 @@ DATABASES = {
 So django will connect onto the mysql instance inside the docker container inside the VMhost. 
 (complicated enough plumbing alread)
 
+once django is running (has passed its startup tests) it says:
+http://127.0.0.1:8000/
+
+look in url.py for the various URL's:
+
+http://127.0.0.1:8000/apipersons/
+http://127.0.0.1:8000/apiperson/mathew
+
+
+
+go there, 
+
 
 
 
