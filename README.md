@@ -51,12 +51,15 @@ http://127.0.0.1:8000/
 
 look in url.py for the various URL's:
 
+There is a really cool admin interface:
+http://127.0.0.1:8000/admin
+
+log in using account made by running manage.py
+
+(I made the userid/password root/rootroot using an admin script manage.py. there is probably a way to do this in code too.. I've not looked into it: manage.py createsuperuser root )
+
 http://127.0.0.1:8000/apipersons/
 http://127.0.0.1:8000/apiperson/mathew
-
-
-
-go there, 
 
 
 
